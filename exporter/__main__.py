@@ -1,10 +1,10 @@
 import configparser
-import csv
 import sys
 
 import requests
 
 from exporter.tree import extract_stories
+from exporter.writer import write_to_csv
 
 
 def _sections(testrail_config):
@@ -24,13 +24,8 @@ def main(args=None):
     if args is None:
         args = sys.argv[1:]
     stories = extract_stories(_sections(load_config()))
-    keys = stories[0].keys()
-    filename = 'stories.csv'
-    with open(filename, 'w') as output_file:
-        dict_writer = csv.DictWriter(output_file, keys)
-        dict_writer.writeheader()
-        dict_writer.writerows(stories)
-    print("CSV file of {} stories written to {}".format(len(stories), filename))
+    csv_data = write_to_csv('stories.csv', stories)
+    print("CSV file of {} stories written to {}".format(csv_data['num_records'], csv_data['output_filename']))
 
 
 if __name__ == '__main__':
