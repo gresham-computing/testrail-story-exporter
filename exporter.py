@@ -87,11 +87,13 @@ def walk_tree(context, node):
         return walk_nodes(context, node['children'])
 
 
+def extract_stories(sections):
+    return [story for story in walk_nodes({}, parse_tree(sections)) if story is not None]
+
 if __name__ == '__main__':
     config = configparser.ConfigParser()
     config.read('testrail.ini')
-    tree = parse_tree(_sections(config['testrail']))
-    stories = [story for story in walk_nodes({}, tree) if story is not None]
+    stories = extract_stories(_sections(config['testrail']))
     keys = stories[0].keys()
     filename = 'stories.csv'
     with open(filename, 'w') as output_file:
