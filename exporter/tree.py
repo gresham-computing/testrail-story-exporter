@@ -1,42 +1,6 @@
-import requests
-import configparser
 import re
-import csv
 
-
-def _sections(testrail_config):
-    url = "https://{0}/index.php?/api/v2/get_sections/{1}".format(testrail_config['server'], testrail_config['suiteid'])
-    r = requests.get(url, auth=(testrail_config['username'], testrail_config['apikey']), headers={'Content-Type': 'application/json'})
-    return r.json()
-
-
-def _match_line(prefix, story):
-    return re.search("^{0}(.*)$".format(prefix), story, re.MULTILINE).group(1).strip()
-
-
-def in_order_to(story):
-    return _match_line("In order to", story)
-
-
-def i_want(story):
-    return _match_line("I want", story)
-
-
-def as_a(story):
-    return _match_line("As", story)
-
-
-def parse_user_story(node):
-    story = node['description']
-    try:
-        return {
-            'in order to': in_order_to(story),
-            'as': as_a(story),
-            'I want': i_want(story),
-        }
-    except (TypeError, AttributeError):
-        print("Unable to parse story {}".format(node['name']))
-        return None
+from exporter.story import parse_user_story
 
 
 def _parse_tree(sections):
@@ -89,16 +53,3 @@ def _walk_tree(context, node):
 
 def extract_stories(sections):
     return [story for story in _walk_nodes({}, _parse_tree(sections)) if story is not None]
-
-
-if __name__ == '__main__':
-    config = configparser.ConfigParser()
-    config.read('testrail.ini')
-    stories = extract_stories(_sections(config['testrail']))
-    keys = stories[0].keys()
-    filename = 'stories.csv'
-    with open(filename, 'w') as output_file:
-        dict_writer = csv.DictWriter(output_file, keys)
-        dict_writer.writeheader()
-        dict_writer.writerows(stories)
-    print("CSV file of {} stories written to {}".format(len(stories), filename))

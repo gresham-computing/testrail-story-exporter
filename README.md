@@ -26,10 +26,10 @@ about generating API keys.
 
 ## Usage
 
-Invoke as a python script in the usual way
+Invoke as a python module
 
 ```bash
-python3 exporter.py
+python3 -m exporter
 ```
 
 You'll get some output explaining any stories that couldn't be parsed. In this directory you'll get a `stories.csv` file
