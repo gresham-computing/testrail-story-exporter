@@ -39,7 +39,7 @@ def parse_user_story(node):
         return None
 
 
-def parse_tree(sections):
+def _parse_tree(sections):
     for section in sections:
         section['children'] = []
 
@@ -66,15 +66,15 @@ def _update_context(section_header, context):
     return context
 
 
-def flatten(list_of_lists):
+def _flatten(list_of_lists):
     return [item for sublist in list_of_lists for item in sublist]
 
 
-def walk_nodes(context, nodes):
-    return flatten(walk_tree(context, n) for n in nodes)
+def _walk_nodes(context, nodes):
+    return _flatten(_walk_tree(context, n) for n in nodes)
 
 
-def walk_tree(context, node):
+def _walk_tree(context, node):
     if not node['children']:
         # leaf node, this is a user story
         story = parse_user_story(node)
@@ -84,11 +84,11 @@ def walk_tree(context, node):
     else:
         # this is a grouping of stories
         context = _update_context(node['name'], context)
-        return walk_nodes(context, node['children'])
+        return _walk_nodes(context, node['children'])
 
 
 def extract_stories(sections):
-    return [story for story in walk_nodes({}, parse_tree(sections)) if story is not None]
+    return [story for story in _walk_nodes({}, _parse_tree(sections)) if story is not None]
 
 
 if __name__ == '__main__':
