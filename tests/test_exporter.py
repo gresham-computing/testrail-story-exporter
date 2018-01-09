@@ -4,7 +4,6 @@ from exporter import in_order_to, i_want, as_a, parse_user_story
 
 
 class TestExporter(unittest.TestCase):
-
     example_story = """
     
 In order to test this function
@@ -35,6 +34,13 @@ I want to create test data
             'as': 'a Software Engineer',
             'I want': 'to create test data'
         })
+
+    def test_parse_invalid_user_story(self):
+        story = {
+            'description': "No useful text",
+            'name': 'My Story'
+        }
+        self.assertIsNone(parse_user_story(story))
 
 
 if __name__ == '__main__':
