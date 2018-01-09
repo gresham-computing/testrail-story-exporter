@@ -4,26 +4,26 @@ import re
 import csv
 
 
-def sections(testrail_config):
+def _sections(testrail_config):
     url = "https://{0}/index.php?/api/v2/get_sections/{1}".format(testrail_config['server'], testrail_config['suiteid'])
     r = requests.get(url, auth=(testrail_config['username'], testrail_config['apikey']), headers={'Content-Type': 'application/json'})
     return r.json()
 
 
-def match_line(prefix, story):
+def _match_line(prefix, story):
     return re.search("^{0}(.*)$".format(prefix), story, re.MULTILINE).group(1).strip()
 
 
 def in_order_to(story):
-    return match_line("In order to", story)
+    return _match_line("In order to", story)
 
 
 def i_want(story):
-    return match_line("I want", story)
+    return _match_line("I want", story)
 
 
 def as_a(story):
-    return match_line("As", story)
+    return _match_line("As", story)
 
 
 def parse_user_story(node):
@@ -52,12 +52,12 @@ def parse_tree(sections):
     return [section for section in sections if section['parent_id'] is None]
 
 
-def give_story_context(story, context):
+def _give_story_context(story, context):
     story['theme'] = context.get('theme')
     story['epic'] = context.get('epic')
 
 
-def update_context(section_header, context):
+def _update_context(section_header, context):
     context = context.copy()
     if 'Epic' in section_header:
         context['epic'] = re.search("Epic - (.*)", section_header).group(1).strip()
@@ -79,18 +79,18 @@ def walk_tree(context, node):
         # leaf node, this is a user story
         story = parse_user_story(node)
         if story is not None:
-            give_story_context(story, context)
+            _give_story_context(story, context)
         return [story]
     else:
         # this is a grouping of stories
-        context = update_context(node['name'], context)
+        context = _update_context(node['name'], context)
         return walk_nodes(context, node['children'])
 
 
 if __name__ == '__main__':
     config = configparser.ConfigParser()
     config.read('testrail.ini')
-    tree = parse_tree(sections(config['testrail']))
+    tree = parse_tree(_sections(config['testrail']))
     stories = [story for story in walk_nodes({}, tree) if story is not None]
     keys = stories[0].keys()
     filename = 'stories.csv'
