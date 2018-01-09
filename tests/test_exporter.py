@@ -1,6 +1,6 @@
 import unittest
 
-from exporter import in_order_to, i_want, as_a
+from exporter import in_order_to, i_want, as_a, parse_user_story
 
 
 class TestExporter(unittest.TestCase):
@@ -24,6 +24,17 @@ I want to create test data
 
     def test_as_a(self):
         self.assertEqual(as_a(self.example_story), 'a Software Engineer')
+
+    def test_parse_valid_user_story(self):
+        story = {
+            'description': self.example_story,
+            'name': 'My Story'
+        }
+        self.assertDictEqual(parse_user_story(story), {
+            'in order to': 'test this function',
+            'as': 'a Software Engineer',
+            'I want': 'to create test data'
+        })
 
 
 if __name__ == '__main__':
