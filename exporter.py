@@ -90,6 +90,7 @@ def walk_tree(context, node):
 def extract_stories(sections):
     return [story for story in walk_nodes({}, parse_tree(sections)) if story is not None]
 
+
 if __name__ == '__main__':
     config = configparser.ConfigParser()
     config.read('testrail.ini')
