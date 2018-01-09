@@ -29,7 +29,7 @@ about generating API keys.
 Invoke as a python script in the usual way
 
 ```bash
-python3 user-story-exporter.py
+python3 exporter.py
 ```
 
 You'll get some output explaining any stories that couldn't be parsed. In this directory you'll get a `stories.csv` file
