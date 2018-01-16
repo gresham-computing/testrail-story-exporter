@@ -52,4 +52,10 @@ def _walk_tree(context, node):
 
 
 def extract_stories(sections):
+    """Extract stories from a list of TestRail sections
+
+    Given a list of Sections with a hierarchical relationship, parse them into
+    a tree and walk through, collecting up meta-data about each level (e.g., epic
+    name) and collect into a list of user stories.
+    """
     return [story for story in _walk_nodes({}, _parse_tree(sections)) if story is not None]

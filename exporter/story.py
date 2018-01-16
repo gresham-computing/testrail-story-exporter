@@ -18,6 +18,7 @@ def as_a(story):
 
 
 def parse_user_story(node):
+    """Parse a block of raw text into an ordered user story."""
     story = node['description']
     try:
         return {

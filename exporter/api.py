@@ -11,6 +11,7 @@ class TestRailApi:
         return 'https://%s/index.php?' % self.server
 
     def _request(self, endpoint):
+        """Perform a request to TestRail using the provided endpoint and credentials."""
         uri = self._url() + endpoint
         r = requests.get(uri,
                          auth=(self.username, self.api_key),
