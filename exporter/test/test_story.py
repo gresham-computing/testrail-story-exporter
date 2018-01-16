@@ -15,6 +15,12 @@ I want to create test data
 * Must have a blank line at the start to confuse things
     """
 
+    basic_story = """
+In order to test this function
+As a Software Engineer
+I want to create test data
+    """
+
     def test_in_order_to(self):
         self.assertEqual(in_order_to(self.example_story), 'test this function')
 
@@ -28,6 +34,10 @@ I want to create test data
         self.assertEqual(acceptance_criteria(self.example_story),
                          ['Must be formatted in markdown',
                           'Must have a blank line at the start to confuse things'])
+
+    def test_acceptance_criteria_on_basic_story(self):
+        """Test a user story without acceptance criteria"""
+        self.assertEqual(acceptance_criteria(self.basic_story), [])
 
     def test_parse_valid_user_story(self):
         story = {
