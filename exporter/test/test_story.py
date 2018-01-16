@@ -1,6 +1,6 @@
 import unittest
 
-from exporter.story import in_order_to, i_want, as_a, parse_user_story, acceptance_criteria
+from exporter.story import in_order_to, i_want, as_a, parse_user_story, acceptance_criteria, pretty_user_story
 
 
 class TestStory(unittest.TestCase):
@@ -59,6 +59,13 @@ I want to create test data
         }
         self.assertIsNone(parse_user_story(story))
 
+    def test_pretty_user_story(self):
+        story = {
+            'acceptance criteria': ['Print acceptance criteria', 'Print one on each line']
+        }
+        self.assertDictEqual(pretty_user_story(story), {
+            'acceptance criteria': 'Print acceptance criteria\nPrint one on each line'
+        })
 
 if __name__ == '__main__':
     unittest.main()

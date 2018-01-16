@@ -34,3 +34,9 @@ def parse_user_story(node):
     except (TypeError, AttributeError):
         print('Unable to parse story %s' % node['name'])
         return None
+
+
+def pretty_user_story(story):
+    """Pretty up a user story"""
+    story['acceptance criteria'] = '\n'.join(story['acceptance criteria'])
+    return story
