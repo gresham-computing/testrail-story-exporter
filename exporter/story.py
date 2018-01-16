@@ -17,6 +17,10 @@ def as_a(story):
     return _match_line('As', story)
 
 
+def acceptance_criteria(story):
+    return re.findall('^ *\* *(.*)$', story, re.MULTILINE)
+
+
 def parse_user_story(node):
     """Parse a block of raw text into an ordered user story."""
     story = node['description']
@@ -25,6 +29,7 @@ def parse_user_story(node):
             'in order to': in_order_to(story),
             'as': as_a(story),
             'I want': i_want(story),
+            'acceptance criteria': acceptance_criteria(story),
         }
     except (TypeError, AttributeError):
         print('Unable to parse story %s' % node['name'])
