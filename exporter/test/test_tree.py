@@ -47,14 +47,16 @@ I want to buzz"""
                 'epic': 'Epic One',
                 'as': 'a Software Engineer',
                 'in order to': 'foo',
-                'I want': 'to bar'
+                'I want': 'to bar',
+                'acceptance criteria': [],
             },
             {
                 'theme': 'My Theme',
                 'epic': 'Epic Two',
                 'as': 'a Software Tester',
                 'in order to': 'fizz',
-                'I want': 'to buzz'
+                'I want': 'to buzz',
+                'acceptance criteria': [],
             }
         ])
 
